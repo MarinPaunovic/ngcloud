@@ -25,9 +25,10 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/', 'homepage')->name('homepage');
     Route::get('/logout', 'logout')->name('logout');;
     Route::controller(PhotoController::class)->group(function(){
-        Route::post('/photos','store');
-        Route::get('/photos/create','create');
-        Route::delete('/photos/{filename}','destroy');
-        Route::post('/photos/upload','upload');
+        Route::get('/photos/create','create')->name('photos.create');
+        Route::delete('/photos/{filename}','destroy')->name('photos.destroy');
+        Route::post('/photos/download','download')->name('photos.download');
+        Route::post('/photos','store')->name('photos.store');
+        Route::post('/photos/upload','upload')->name('photos.upload');
     });
 });

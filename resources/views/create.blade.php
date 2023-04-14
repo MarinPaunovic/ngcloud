@@ -18,6 +18,7 @@
 
     <form action="{{ route('photos.upload') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('POST')
         <div class="form-group">
             <label for="photo">Select photo:</label>
             <input type="file" class="form-control-file" id="photo" name="photo">
@@ -26,26 +27,30 @@
     </form>
 
     <hr>
-
     <h2>Uploaded photos:</h2>
-
     <?php
     $userId = auth()->user()->id;
-    $results = DB::select("select * from files where $userId");
+    $results = DB::select("select * from files where userId = $userId");
     ?>
 
-    @foreach ($results as $file)
-        @if (Storage::exists('public/uploads/' . $file->name))
-            <h1>test</h1>
-            <h1><?php
-            $filename = basename($file->name);
-            $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-            echo $withoutExt; ?><h2>
-                    <form action="{{ route('photos.destroy', $filename) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger mt-3">Delete</button>
-                    </form>
-        @endif
-    @endforeach
+    <div style="display: flex;flex-direction:column;margin-top:25px;gap:20px;">
+        @foreach ($results as $file)
+            <div style="display:flex;flex-direction:row;gap:20px;align-items:center">
+                <img style="width:250px;" src="{{ asset('storage/uploads/' . $file->name) }}" />
+                @if (Storage::exists('public/uploads/' . $file->name))
+                    <h1><?php
+                    echo decrypt($file->name); ?><h2>
+                            <form action="{{ route('photos.destroy', $file->name) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger mt-3">Delete</button>
+                            </form>
+                            <form action="{{ route('photos.download', $file->name) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-primary mt-3">Download</button>
+                            </form>
+                @endif
+            </div>
+        @endforeach
+    </div>
 @endsection
