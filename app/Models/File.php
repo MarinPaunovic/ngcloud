@@ -8,8 +8,9 @@ class File extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'userId',
         'file_path',
-        'userId'
+        'file_size'
     ];
 
 }
