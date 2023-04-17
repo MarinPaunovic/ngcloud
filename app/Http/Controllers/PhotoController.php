@@ -32,7 +32,8 @@ class PhotoController extends Controller{
         $encryptedName = encrypt($request->photo->getClientOriginalName());
 
         $photo = $request->file('photo')->storeAs('public/uploads', $encryptedName);
-        
+        $file_size = number_format($request->photo->getSize() / 1048576,2);
+
         $user = auth()->user()->id;
         $fileModel = new File;
         if($request->photo) {
@@ -40,6 +41,7 @@ class PhotoController extends Controller{
             $filePath = $request->photo;
             $fileModel->userId = $user;
             $fileModel->name = $encryptedName;
+            $fileModel->file_size = $file_size . "MB";
             $fileModel->file_path = '/storage/' . $fileName;
             $fileModel->save();
             return back()
