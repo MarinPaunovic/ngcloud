@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 
 
@@ -27,7 +28,7 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::controller(PhotoController::class)->group(function(){
         Route::get('/photos/create','create')->name('photos.create');
         Route::delete('/photos/{filename}','destroy')->name('photos.destroy');
-        Route::post('/photos/download','download')->name('photos.download');
+        Route::post('/photos/download/{filename}','download')->name('photos.download');
         Route::post('/photos','store')->name('photos.store');
         Route::post('/photos/upload','upload')->name('photos.upload');
     });
