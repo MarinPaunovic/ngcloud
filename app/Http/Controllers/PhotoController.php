@@ -60,8 +60,8 @@ class PhotoController extends Controller{
       }
     } 
 
-    public function download(Request $request){
-        dd($request->file);
+    public function download($filename){
+        return response()->download(storage_path('/app/public/uploads/'.$filename), decrypt($filename));
     }
 
 }
