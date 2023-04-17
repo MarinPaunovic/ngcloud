@@ -14,14 +14,6 @@ use App\Models\File;
 
 class PhotoController extends Controller{
     
-    public function create()
-    {
-        if(!Auth::check())
-        {
-            return redirect()->route('login');
-        }
-        return view('create');
-    }
 
     public function upload(Request $request){ 
         $request->validate([
