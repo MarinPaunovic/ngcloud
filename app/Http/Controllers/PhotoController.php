@@ -17,23 +17,23 @@ class PhotoController extends Controller{
 
     public function upload(Request $request){ 
         $request->validate([
-            'photo' =>'required|image|mimes:jpg,jpeg,png,gif,csv,txt,xlx,xls,pdf|max:2048',
+            'file' =>'required|mimes:jpg,jpeg,png,gif,csv,txt,xlx,xls,pdf|max:15000',
         ]);
-        $fileName=$request->photo->getClientOriginalName();
+        $fileName=$request->file->getClientOriginalName();
 
-        $encryptedName = encrypt($request->photo->getClientOriginalName());
+        $encryptedName = encrypt($request->file->getClientOriginalName());
 
-        $photo = $request->file('photo')->storeAs('public/uploads', $encryptedName);
-        $file_size = number_format($request->photo->getSize() / 1048576,2);
+        $file = $request->file('file')->storeAs('public/uploads', $encryptedName);
 
+;
         $user = auth()->user()->id;
         $fileModel = new File;
-        if($request->photo) {
+        if($request->file) {
             $fileName = $encryptedName;
-            $filePath = $request->photo;
+            $filePath = $request->file;
             $fileModel->userId = $user;
             $fileModel->name = $encryptedName;
-            $fileModel->file_size = $file_size . "MB";
+            $fileModel->file_size = $request->file->getSize();
             $fileModel->file_path = '/storage/' . $fileName;
             $fileModel->save();
             return back()
