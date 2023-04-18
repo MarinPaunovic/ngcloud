@@ -27,6 +27,7 @@
     align-items: center;
     display:grid;
     grid-template-columns: 10% 25% 25% 25%  15%;
+    grid-row-gap: 20px;
 }
 
 .files__wrapper .description{
@@ -37,5 +38,11 @@
 
 .grid .buttons{
     display:flex;
-    gap:15px;
+    gap:50px;
+}
+
+.just__wrapper{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
