@@ -18,7 +18,7 @@ class LoginRegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except([
-           'logout','homepage'
+                'logout'
         ]);
     }
 
@@ -31,7 +31,7 @@ class LoginRegisterController extends Controller
 
     public function register()
     {
-        return view('register');
+            return view('register');
     }
 
     /**
@@ -102,18 +102,6 @@ class LoginRegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function homepage()
-    {
-        if(Auth::check())
-        {
-            return view('home');
-        }
-        
-        return redirect()->route('login')
-            ->withErrors([
-            'email' => 'Please login to access the homepage.',
-        ])->onlyInput('email');
-    } 
     
     /**
      * Log out the user from application.
