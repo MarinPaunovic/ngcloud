@@ -32,16 +32,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/store', 'store')->name('store');
         Route::get('/logout', 'logout')->name('logout');
     });
-    Route::controller(PhotoController::class)->group(function(){
-        Route::delete('/photos/{filename}','destroy')->name('photos.destroy');
-        Route::get('/photos/download/{filename}', function (){
-            return redirect()->route('homepage');
+    Route::prefix('photos')->group(function(){
+        Route::name('photos.')->group(function(){
+            Route::view('/test','test');
+            Route::controller(PhotoController::class)->group(function(){
+                Route::get('/download/{filename}', function (){
+                    return redirect()->route('homepage');
+                });
+                Route::delete('/{filename}','destroy')->name('destroy');
+                Route::post('/download/{filename}','download')->name('download');
+                Route::post('/upload','upload')->name('upload');
+            });
         });
-        Route::post('/photos/download/{filename}','download')->name('photos.download');
-        Route::post('/photos/upload','upload')->name('photos.upload');
     });
 });
 
-Route::fallback(function(){
-    return redirect()->route('homepage');
-});
+// Route::fallback(function(){
+//     return redirect()->route('homepage');
+// });
