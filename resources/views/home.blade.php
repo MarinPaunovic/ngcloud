@@ -59,7 +59,7 @@
                             ?>
 
                             @switch($fileExtension)
-                                @case($fileExtension === 'png' || $fileExtension === 'jpeg' || $fileExtension === 'jpg')
+                                @case($fileExtension === 'png' || $fileExtension === 'jpeg' || $fileExtension === 'jpg' || $fileExtension === 'avif')
                                     <div><i class="fa fa-picture-o"></i></div>
                                 @break
 

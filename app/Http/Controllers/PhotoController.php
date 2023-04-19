@@ -17,7 +17,7 @@ class PhotoController extends Controller{
 
     public function upload(Request $request){ 
         $request->validate([
-            'file' =>'required|mimes:jpg,jpeg,png,gif,csv,txt,xlx,xls,pdf|max:15000',
+            'file' =>'required|mimes:jpg,jpeg,png,avif,gif,csv,txt,xlx,xls,pdf|max:15000',
         ]);
         $fileName=$request->file->getClientOriginalName();
 
