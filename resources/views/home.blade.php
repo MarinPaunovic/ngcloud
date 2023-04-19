@@ -58,28 +58,23 @@
                             $fileExtension = substr($name, strpos($name, '.') + 1);
                             ?>
 
-                            <?php switch($fileExtension): case ($fileExtension === "png" || $fileExtension ==="jpeg" || $fileExtension ==="jpg"): ?>
-                            <div><i class="fa fa-picture-o"></i></div>
-                            <?php break; ?>
+                            @switch($fileExtension)
+                                @case($fileExtension === 'png' || $fileExtension === 'jpeg' || $fileExtension === 'jpg')
+                                    <div><i class="fa fa-picture-o"></i></div>
+                                @break
 
-                            <?php case "pdf": ?>
-                            <div><i class="fa fa-file-pdf-o" aria-hidden="true"></i></div>
-                            <?php break; ?>
+                                @case('pdf')
+                                    <div><i class="fa fa-file-pdf-o" aria-hidden="true"></i></div>
+                                @break
 
-                            <?php case "xdoc": ?>
-                            <div>xdoc image</div>
-                            <?php break; ?>
+                                @case('xdoc')
+                                    <div>xdoc image</div>
+                                @break
 
-                            <?php case "xlsx": ?>
-                            <div>xlsx image</div>
-                            <?php break; ?>
-                            <?php case "mp3": ?>
-                            <div>mp3 image</div>
-                            <?php break; ?>
-                            <?php case "pptx": ?>
-                            <div>pptx image</div>
-                            <?php break; ?>
-                            <?php endswitch; ?>
+                                @case('xlsx')
+                                    <div>xlsx image</div>
+                                @break
+                            @endswitch
 
                             <div><?php echo $name; ?></div>
                             <div><?php echo $file->created_at; ?></div>
