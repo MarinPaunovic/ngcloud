@@ -30,6 +30,10 @@
     grid-row-gap: 20px;
 }
 
+.files__wrapper .grid.grid__admin{
+    grid-template-columns: 10% 20% 20% 20% 15% 15%;
+}
+
 .files__wrapper .description{
     display:grid;
     flex-direction: row;
