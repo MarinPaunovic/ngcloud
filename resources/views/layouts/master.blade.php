@@ -44,6 +44,9 @@
 
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                                @if (auth()->user()->role === 'admin')
+                                    <li><a class="dropdown-item" href="{{ route('users') }}">Users panel</a></li>
+                                @endif
                                 <li><a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">Logout</a>
