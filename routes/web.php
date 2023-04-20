@@ -3,6 +3,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController; 
+use App\Http\Controllers\ProfileController;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -18,23 +21,37 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::group(["middleware"=>"admin"],function(){
+    Route::get('/users',[UserController::class,'index'])->name('users');
+});
+
 Route::controller(LoginRegisterController::class)->group(function(){
-Route::get('/register', 'register')->name('register');
-Route::get('/login', 'login')->name('login');
-Route::post('/authenticate', 'authenticate')->name('authenticate');  
+    Route::get('/register', 'register')->name('register');
+    Route::get('/login', 'login')->name('login');
+    Route::post('/authenticate', 'authenticate')->name('authenticate');  
 });
 
 
 Route::group(['middleware' => 'auth'], function () { 
-    Route::view('/', 'home')->name('homepage');
-    Route::view('/profile','profile')->name('profile');
+    Route::get('/', [PhotoController::class,'index'])->name('homepage');
+    
+    Route::prefix('profile')->group(function(){
+        Route::name('profile')->group(function(){
+            Route::controller(ProfileController::class)->group(function(){
+                Route::get('','index');
+                Route::post('/update','update')->name('.update');
+            });
+        });
+    });
+
     Route::controller(LoginRegisterController::class)->group(function(){
         Route::post('/store', 'store')->name('store');
         Route::get('/logout', 'logout')->name('logout');
     });
+    
     Route::prefix('photos')->group(function(){
         Route::name('photos.')->group(function(){
-            Route::view('/test','test');
             Route::controller(PhotoController::class)->group(function(){
                 Route::get('/download/{filename}', function (){
                     return redirect()->route('homepage');
@@ -47,6 +64,6 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
-// Route::fallback(function(){
-//     return redirect()->route('homepage');
-// });
+Route::fallback(function(){
+    return redirect()->route('homepage');
+});
