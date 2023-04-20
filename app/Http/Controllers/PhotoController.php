@@ -11,9 +11,20 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\File;
+use App\Models\User;
 
 class PhotoController extends Controller{
     
+    public function index(Request $request){
+        $user=auth()->user();
+        if($user->role === "admin"){
+            $files = File::query("files")->paginate(5);
+        }else{
+            $files = File::query("files")->where('userId', '=', $user->id)->paginate(5);
+            
+        }
+       return view('home',["files" => $files]);
+    }
 
     public function upload(Request $request){ 
         $request->validate([
@@ -25,7 +36,6 @@ class PhotoController extends Controller{
 
         $file = $request->file('file')->storeAs('public/uploads', $encryptedName);
 
-;
         $user = auth()->user()->id;
         $fileModel = new File;
         if($request->file) {
