@@ -2,8 +2,8 @@
 
 @section('content')
     <?php
+    $isAdmin = auth()->user()->role === 'admin';
     $userId = auth()->user()->id;
-    $results = DB::select("select * from files where userId = $userId");
     ?>
     <div class="home__wrapper">
         @if ($errors->any())
@@ -27,8 +27,8 @@
                 </div>
                 <div> <?php
                 $spaceTaken = 0;
-                foreach ($results as $result) {
-                    $spaceTaken = $spaceTaken + number_format($result->file_size / 1024 / 1024, 2);
+                foreach ($files as $file) {
+                    $spaceTaken = $spaceTaken + number_format($file->file_size / 1024 / 1024, 2);
                 }
                 
                 echo number_format(3 - $spaceTaken / 1000, 2);
@@ -44,15 +44,28 @@
             <div>
 
                 <div class="files__wrapper" style="display: flex;flex-direction:column;margin-top:25px;gap:20px;">
-                    <div class="grid">
+                    <div class="<?php if ($isAdmin) {
+                        echo 'grid grid__admin';
+                    } else {
+                        echo 'grid';
+                    }
+                    ?>">
                         <div></div>
                         <div>Name</div>
                         <div>Added</div>
                         <div>Size</div>
+                        @if ($isAdmin)
+                            <div>Added by</div>
+                        @endif
                         <div></div>
                     </div>
-                    <div class="grid">
-                        @foreach ($results as $file)
+                    <div class="<?php if ($isAdmin) {
+                        echo 'grid grid__admin';
+                    } else {
+                        echo 'grid';
+                    }
+                    ?>">
+                        @foreach ($files as $file)
                             <?php
                             $name = decrypt($file->name);
                             $fileExtension = substr($name, strpos($name, '.') + 1);
@@ -82,6 +95,17 @@
                             $size_mb = number_format($file->file_size / 1024 / 1024, 2);
                             
                             echo $size_mb . 'MB'; ?></div>
+
+                            @if ($isAdmin)
+                                <div>
+                                    @php
+                                        $name = DB::table('users')
+                                            ->where('id', '=', $file->userId)
+                                            ->get('name');
+                                        
+                                        echo $name[0]->name;
+                                    @endphp</div>
+                            @endif
                             <div class="buttons">
                                 @if (Storage::exists('public/uploads/' . $file->name))
                                     <form action="{{ route('photos.destroy', $file->name) }}" method="POST">
@@ -99,7 +123,9 @@
                                 @endif
                             </div>
                         @endforeach
-
+                    </div>
+                    <div style="align-self:center;margin-top:25px;">
+                        {!! $files->links() !!}
                     </div>
                 </div>
             </div>
