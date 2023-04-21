@@ -6,6 +6,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\ProfileController;
 use App\Models\Admin;
+use App\Mail\Test;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -22,12 +23,16 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/forgot',[TestController::class, 'index'])->name('forgot');
+Route::post('/forgot/reset',[TestController::class,'reset'])->name('forgot.reset');
+
 Route::group(["middleware"=>"admin"],function(){
     Route::get('/users',[UserController::class,'index'])->name('users');
 });
 
 Route::controller(LoginRegisterController::class)->group(function(){
     Route::get('/register', 'register')->name('register');
+    Route::post('/store', 'store')->name('store');
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');  
 });
@@ -46,7 +51,6 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::controller(LoginRegisterController::class)->group(function(){
-        Route::post('/store', 'store')->name('store');
         Route::get('/logout', 'logout')->name('logout');
     });
     
