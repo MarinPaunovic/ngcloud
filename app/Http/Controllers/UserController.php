@@ -15,17 +15,7 @@ class UserController extends Controller
         if($user->role === "admin"){
             $users = User::query('users')->where('role', '=', "user")->paginate(5);
             $files = DB::table('users')->join('files', "userId", "=", "users.id")->get();
-            $storageSize=[];
-            foreach($users as $user){
-                $userStorage=0;
-                foreach($files as $file){
-                    if($file->userId == $user->id){
-                        $userStorage = $userStorage + (float)$file->file_size;
-                    }
-                };
-                array_push($storageSize,[$user->id => $userStorage ]);
-            }
-            return view('users',["users"=>$users, 'sizes'=> $storageSize]);
+           return summEachUserStorage($files,$users);
         }
          return redirect()->back()->withError("You dont have admin premission.");   
     }
