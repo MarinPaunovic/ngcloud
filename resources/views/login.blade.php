@@ -35,6 +35,7 @@
                         </div>
 
                     </form>
+                    <div> forgot password? reset <a href="{{ route('forgot') }}">here</a></div>
                 </div>
             </div>
         </div>
