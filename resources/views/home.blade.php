@@ -2,8 +2,9 @@
 
 @section('content')
     <?php
-    $isAdmin = auth()->user()->role === 'admin';
+    $isAdmin = auth()->user()->role == 'admin';
     $userId = auth()->user()->id;
+    $storage = summAllUserStorage($files);
     ?>
     <div class="home__wrapper">
         @if ($errors->any())
@@ -25,14 +26,31 @@
                     <h1 class="title">Files</h1>
                     <p class="description">Upload & download your files</p>
                 </div>
-                <div> <?php
-                $spaceTaken = 0;
-                foreach ($files as $file) {
-                    $spaceTaken = $spaceTaken + number_format($file->file_size / 1024 / 1024, 2);
-                }
-                
-                echo number_format(3 - $spaceTaken / 1000, 2);
-                ?> / 3 GB available</div>
+
+                @if (!$isAdmin)
+                    <div> <?php
+                    $spaceTaken = 0;
+                    foreach ($files as $file) {
+                        $spaceTaken = $spaceTaken + number_format($file->file_size / 1024 / 1024, 2);
+                    }
+                    
+                    echo number_format(3 - $spaceTaken / 1000, 2);
+                    ?> / 3 GB available</div>
+                @else
+                    <div>
+                        @php
+                            echo $storage['used'];
+                        @endphp
+                        /
+                        @php
+                            echo $storage['total'];
+                        @endphp
+                        GB
+                        <div>
+                            for total <?php echo $storage['userCount']; ?> users
+                        </div>
+                    </div>
+                @endif
             </div>
             <form action="{{ route('photos.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
