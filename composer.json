@@ -28,7 +28,7 @@
     "autoload": {
         "files": [
             "app/Helpers/Admin/summAllUserStorage.php",
-            "app/Helpers/Admin/convertBytesToMB.php",
+            "app/Helpers/convertBytesToMB.php",
             "app/Helpers/Admin/summEachUserStorage.php"
         ],
         "psr-4": {
