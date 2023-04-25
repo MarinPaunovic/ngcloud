@@ -43,7 +43,7 @@ class TestMail extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.subscribers',
+            markdown: 'emails.password',
             with: ['link'=> $this->link]
         );
     }
