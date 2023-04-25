@@ -5,6 +5,7 @@
                 here
             </a>
         </p>
+        {{ $link }}
     </div>
 
 </x-mail::message>
