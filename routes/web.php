@@ -2,11 +2,12 @@
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\PhotoController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\ProfileController;
 use App\Models\Admin;
-use App\Mail\Test;
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/forgot',[TestController::class, 'index'])->name('forgot');
-Route::post('/forgot/reset',[TestController::class,'reset'])->name('forgot.reset');
+Route::group(["middleware"=>"guest"],function(){
+    Route::get('/forgot-password',[PasswordController::class, 'request'])->name('password.request');
+    Route::post('/forgot-password',[PasswordController::class,'resetLink'])->name('password.email');
+    Route::get('/reset-password/{token}',[PasswordController::class,'reset'])->name('password.reset');
+    Route::post('/reset-password',[PasswordController::class,'newPassword'])->name('password.update');
+});
+
 
 Route::group(["middleware"=>"admin"],function(){
     Route::get('/users',[UserController::class,'index'])->name('users');
