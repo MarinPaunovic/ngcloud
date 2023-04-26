@@ -3,6 +3,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\ProfileController;
 use App\Models\Admin;
@@ -46,7 +47,8 @@ Route::controller(LoginRegisterController::class)->group(function(){
 
 Route::group(['middleware' => 'auth'], function () { 
     Route::get('/', [PhotoController::class,'index'])->name('homepage');
-    
+    Route::get('/pdf',[PdfController::class,'index'])->name('pdf');
+    Route::post('/pdf/download',[PdfController::class,'createPDF'])->name('pdf.download');
     Route::prefix('profile')->group(function(){
         Route::name('profile')->group(function(){
             Route::controller(ProfileController::class)->group(function(){

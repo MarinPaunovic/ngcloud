@@ -15,7 +15,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container">
             <a class="navbar-brand" href="{{ URL('/') }}">Cloud task</a>
@@ -44,6 +43,7 @@
 
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('pdf') }}">PDF</a></li>
                                 @if (auth()->user()->role === 'admin')
                                     <li><a class="dropdown-item" href="{{ route('users') }}">Users panel</a></li>
                                 @endif
